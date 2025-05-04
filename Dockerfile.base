@@ -1,0 +1,17 @@
+FROM node:18-alpine AS base
+
+# Install pnpm
+RUN corepack enable && corepack prepare pnpm@8.15.4 --activate
+
+# Set working directory
+WORKDIR /app
+
+# Copy root workspace files
+COPY pnpm-lock.yaml pnpm-workspace.yaml package.json turbo.json ./
+COPY packages packages/
+
+# Install dependencies
+RUN pnpm install --frozen-lockfile
+
+# Build shared packages
+RUN pnpm build:ui 
