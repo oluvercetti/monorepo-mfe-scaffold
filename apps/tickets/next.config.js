@@ -10,7 +10,7 @@ const nextConfig = {
                 name: 'tickets',
                 filename: 'static/chunks/remoteEntry.js',
                 exposes: {
-                    './page': './pages/index.tsx',
+                    './Tickets': './pages/index.tsx'
                 },
                 shared: {
                     '@repo/ui': {

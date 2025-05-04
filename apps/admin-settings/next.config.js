@@ -10,7 +10,7 @@ const nextConfig = {
                 name: 'adminSettings',
                 filename: 'static/chunks/remoteEntry.js',
                 exposes: {
-                    './page': './pages/index.tsx',
+                    './AdminSettings': './pages/index.tsx',
                 },
                 shared: {
                     '@repo/ui': {
