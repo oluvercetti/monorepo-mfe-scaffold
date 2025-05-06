@@ -1,4 +1,4 @@
-const NextFederationPlugin = require('@module-federation/nextjs-mf');
+import { NextFederationPlugin } from '@module-federation/nextjs-mf';
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -22,10 +22,15 @@ const nextConfig = {
                         requiredVersion: false,
                     },
                 },
+                extraOptions: {
+                    exposePages: true,
+                    enableImageLoaderFix: true,
+                    enableUrlLoaderFix: true,
+                },
             })
         );
         return config;
     },
 };
 
-module.exports = nextConfig; 
+export default nextConfig; 

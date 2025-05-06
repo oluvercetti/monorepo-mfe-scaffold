@@ -1,18 +1,16 @@
-const NextFederationPlugin = require('@module-federation/nextjs-mf');
+import { NextFederationPlugin } from '@module-federation/nextjs-mf';
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     reactStrictMode: true,
     transpilePackages: ['@repo/ui', '@repo/shared'],
     webpack(config, options) {
-        const { isServer } = options;
         config.plugins.push(
             new NextFederationPlugin({
-                name: 'host',
+                name: 'tickets',
                 filename: 'static/chunks/remoteEntry.js',
-                remotes: {
-                    tickets: `tickets@http://localhost:3001/_next/static/${isServer ? 'ssr' : 'chunks'}/remoteEntry.js`,
-                    adminSettings: `adminSettings@http://localhost:3003/_next/static/${isServer ? 'ssr' : 'chunks'}/remoteEntry.js`,
+                exposes: {
+                    './Tickets': './pages/index.tsx'
                 },
                 shared: {
                     '@repo/ui': {
@@ -24,10 +22,15 @@ const nextConfig = {
                         requiredVersion: false,
                     },
                 },
+                extraOptions: {
+                    exposePages: true,
+                    enableImageLoaderFix: true,
+                    enableUrlLoaderFix: true,
+                },
             })
         );
         return config;
     },
 };
 
-module.exports = nextConfig; 
+export default nextConfig;
