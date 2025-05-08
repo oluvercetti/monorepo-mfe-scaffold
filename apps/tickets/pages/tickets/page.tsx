@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { ticketsApi } from "../api/tickets";
 import { useTicketsStore } from "../stores/tickets-store";
 import { useState } from "react";
-import { Ticket, TicketPriority, TicketStatus } from "../types/ticket";
+import { Ticket, TicketPriority, TicketStatus } from "../../types/ticket";
 import { format } from "date-fns";
 
 export default function TicketsPage() {

@@ -1,5 +1,5 @@
 import { axiosInstance } from "@repo/shared";
-import { Ticket, createTicketSchema } from "../types/ticket";
+import { Ticket, createTicketSchema } from "../../types/ticket";
 import { z } from "zod";
 
 const BASE_URL = "/api/tickets";

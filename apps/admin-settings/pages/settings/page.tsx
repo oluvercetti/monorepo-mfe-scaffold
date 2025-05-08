@@ -1,7 +1,7 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import { useSettingsStore } from "../stores/settings-store";
+import { useSettingsStore } from "../../stores/settings-store";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@repo/ui";
 import { Settings, Users, Shield, Mail } from "lucide-react";
 
