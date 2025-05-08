@@ -2,10 +2,14 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { ticketsApi } from "../api/tickets";
-import { useTicketsStore } from "../stores/tickets-store";
 import { useState } from "react";
 import { Ticket, TicketPriority, TicketStatus } from "../../types/ticket";
 import { format } from "date-fns";
+import { useTicketsStore } from "../../stores/tickets-store";
+
+// Add these type definitions at the top level
+type TicketPriorityValue = (typeof TicketPriority)[keyof typeof TicketPriority];
+type TicketStatusValue = (typeof TicketStatus)[keyof typeof TicketStatus];
 
 export default function TicketsPage() {
   const { filters, setStatusFilter, setSearchFilter } = useTicketsStore();
@@ -52,7 +56,11 @@ export default function TicketsPage() {
         <select
           value={filters.status}
           onChange={(e) =>
-            setStatusFilter(e.target.value as TicketStatus | "all")
+            setStatusFilter(
+              e.target.value as
+                | (typeof TicketStatus)[keyof typeof TicketStatus]
+                | "all"
+            )
           }
           className="border rounded-md px-3 py-2"
         >
@@ -109,8 +117,8 @@ function TicketCard({ ticket }: { ticket: Ticket }) {
   );
 }
 
-function getPriorityColor(priority: keyof typeof TicketPriority) {
-  const colors = {
+function getPriorityColor(priority: TicketPriorityValue) {
+  const colors: Record<TicketPriorityValue, string> = {
     low: "bg-green-100 text-green-800",
     medium: "bg-blue-100 text-blue-800",
     high: "bg-orange-100 text-orange-800",
@@ -119,8 +127,8 @@ function getPriorityColor(priority: keyof typeof TicketPriority) {
   return colors[priority];
 }
 
-function getStatusColor(status: keyof typeof TicketStatus) {
-  const colors = {
+function getStatusColor(status: TicketStatusValue) {
+  const colors: Record<TicketStatusValue, string> = {
     open: "bg-blue-100 text-blue-800",
     in_progress: "bg-yellow-100 text-yellow-800",
     resolved: "bg-green-100 text-green-800",
