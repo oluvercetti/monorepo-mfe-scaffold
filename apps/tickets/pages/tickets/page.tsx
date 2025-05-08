@@ -1,138 +1,40 @@
-"use client";
+import { create } from "zustand";
+import { devtools } from "zustand/middleware";
+import { Ticket, TicketStatus } from "../../types/ticket";
 
-import { useQuery } from "@tanstack/react-query";
-import { ticketsApi } from "../api/tickets";
-import { useState } from "react";
-import { Ticket, TicketPriority, TicketStatus } from "../../types/ticket";
-import { format } from "date-fns";
-import { useTicketsStore } from "../../stores/tickets-store";
+type StatusFilter = (typeof TicketStatus)[keyof typeof TicketStatus] | "all";
 
-// Add these type definitions at the top level
-type TicketPriorityValue = (typeof TicketPriority)[keyof typeof TicketPriority];
-type TicketStatusValue = (typeof TicketStatus)[keyof typeof TicketStatus];
-
-export default function TicketsPage() {
-  const { filters, setStatusFilter, setSearchFilter } = useTicketsStore();
-  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
-
-  const { data: tickets = [], isLoading } = useQuery({
-    queryKey: ["tickets"],
-    queryFn: ticketsApi.getAll,
-  });
-
-  const filteredTickets = tickets.filter((ticket) => {
-    const matchesStatus =
-      filters.status === "all" || ticket.status === filters.status;
-    const matchesSearch =
-      ticket.title.toLowerCase().includes(filters.search.toLowerCase()) ||
-      ticket.description.toLowerCase().includes(filters.search.toLowerCase());
-    return matchesStatus && matchesSearch;
-  });
-
-  if (isLoading) {
-    return <div>Loading tickets...</div>;
-  }
-
-  return (
-    <div className="p-6">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">Tickets</h1>
-        <button
-          onClick={() => setIsCreateModalOpen(true)}
-          className="bg-primary text-primary-foreground px-4 py-2 rounded-md"
-        >
-          Create Ticket
-        </button>
-      </div>
-
-      <div className="flex gap-4 mb-6">
-        <input
-          type="text"
-          placeholder="Search tickets..."
-          className="border rounded-md px-3 py-2 w-64"
-          value={filters.search}
-          onChange={(e) => setSearchFilter(e.target.value)}
-        />
-        <select
-          value={filters.status}
-          onChange={(e) =>
-            setStatusFilter(
-              e.target.value as
-                | (typeof TicketStatus)[keyof typeof TicketStatus]
-                | "all"
-            )
-          }
-          className="border rounded-md px-3 py-2"
-        >
-          <option value="all">All Status</option>
-          {Object.values(TicketStatus).map((status) => (
-            <option key={status} value={status}>
-              {status.replace("_", " ").toUpperCase()}
-            </option>
-          ))}
-        </select>
-      </div>
-
-      <div className="grid gap-4">
-        {filteredTickets.map((ticket) => (
-          <TicketCard key={ticket.id} ticket={ticket} />
-        ))}
-      </div>
-
-      {/* Create Ticket Modal would go here */}
-    </div>
-  );
-}
-
-function TicketCard({ ticket }: { ticket: Ticket }) {
-  return (
-    <div className="border rounded-lg p-4 hover:shadow-md transition-shadow">
-      <div className="flex justify-between items-start mb-2">
-        <h3 className="font-semibold">{ticket.title}</h3>
-        <div className="flex gap-2">
-          <span
-            className={`px-2 py-1 rounded-full text-xs ${getPriorityColor(
-              ticket.priority
-            )}`}
-          >
-            {ticket.priority}
-          </span>
-          <span
-            className={`px-2 py-1 rounded-full text-xs ${getStatusColor(
-              ticket.status
-            )}`}
-          >
-            {ticket.status.replace("_", " ")}
-          </span>
-        </div>
-      </div>
-      <p className="text-sm text-muted-foreground mb-2">{ticket.description}</p>
-      <div className="flex justify-between text-xs text-muted-foreground">
-        <span>
-          Created: {format(new Date(ticket.createdAt), "MMM d, yyyy")}
-        </span>
-        {ticket.assignedTo && <span>Assigned to: {ticket.assignedTo}</span>}
-      </div>
-    </div>
-  );
-}
-
-function getPriorityColor(priority: TicketPriorityValue) {
-  const colors: Record<TicketPriorityValue, string> = {
-    low: "bg-green-100 text-green-800",
-    medium: "bg-blue-100 text-blue-800",
-    high: "bg-orange-100 text-orange-800",
-    urgent: "bg-red-100 text-red-800",
+interface TicketsState {
+  filters: {
+    status: StatusFilter;
+    search: string;
   };
-  return colors[priority];
+  setStatusFilter: (status: StatusFilter) => void;
+  setSearchFilter: (search: string) => void;
+  selectedTicket: Ticket | null;
+  setSelectedTicket: (ticket: Ticket | null) => void;
 }
 
-function getStatusColor(status: TicketStatusValue) {
-  const colors: Record<TicketStatusValue, string> = {
-    open: "bg-blue-100 text-blue-800",
-    in_progress: "bg-yellow-100 text-yellow-800",
-    resolved: "bg-green-100 text-green-800",
-    closed: "bg-gray-100 text-gray-800",
-  };
-  return colors[status];
-}
+export const useTicketsStore = create<TicketsState>()(
+  devtools(
+    (set) => ({
+      filters: {
+        status: "all",
+        search: "",
+      },
+      setStatusFilter: (status) =>
+        set((state) => ({
+          filters: { ...state.filters, status },
+        })),
+      setSearchFilter: (search) =>
+        set((state) => ({
+          filters: { ...state.filters, search },
+        })),
+      selectedTicket: null,
+      setSelectedTicket: (ticket) => set({ selectedTicket: ticket }),
+    }),
+    {
+      name: "tickets-store",
+    }
+  )
+);
