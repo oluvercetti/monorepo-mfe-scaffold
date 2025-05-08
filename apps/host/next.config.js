@@ -6,13 +6,17 @@ const nextConfig = {
     transpilePackages: ['@repo/ui', '@repo/shared'],
     webpack(config, options) {
         const { isServer } = options;
+
+        const ticketsUrl = process.env.TICKETS_URL || 'http://localhost:3001';
+        const adminSettingsUrl = process.env.ADMIN_SETTINGS_URL || 'http://localhost:3003';
+
         config.plugins.push(
             new NextFederationPlugin({
                 name: 'host',
                 filename: 'static/chunks/remoteEntry.js',
                 remotes: {
-                    tickets: `tickets@http://localhost:3001/_next/static/${isServer ? 'ssr' : 'chunks'}/remoteEntry.js`,
-                    adminSettings: `adminSettings@http://localhost:3003/_next/static/${isServer ? 'ssr' : 'chunks'}/remoteEntry.js`,
+                    tickets: `tickets@${ticketsUrl}/_next/static/${isServer ? 'ssr' : 'chunks'}/remoteEntry.js`,
+                    adminSettings: `adminSettings@${adminSettingsUrl}/_next/static/${isServer ? 'ssr' : 'chunks'}/remoteEntry.js`,
                 },
                 shared: {
                     '@repo/ui': {
