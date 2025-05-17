@@ -33,8 +33,8 @@ export default function LoginPreview() {
         ? "px-10 items-center justify-end"
         : "items-center justify-center";
 
-  const previewBg = backgroundImage || "/assets/svgs/login-empty-state.svg";
-  const previewLogo = orgLogo || "/assets/images/access-logo.svg";
+  const previewBg = backgroundImage ?? "/assets/svgs/login-empty-state.svg";
+  const previewLogo = orgLogo ?? "/assets/images/access-logo.svg";
   const isHalf = backgroundType === "half";
   const isRight = layout === "right";
 
