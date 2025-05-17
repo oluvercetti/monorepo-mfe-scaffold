@@ -20,11 +20,17 @@ const nextConfig = {
           "@repo/ui": {
             singleton: true,
             requiredVersion: false,
+            eager: true
           },
           "@repo/shared": {
             singleton: true,
             requiredVersion: false,
+            eager: true
           },
+          "tailwindcss": {
+            singleton: true,
+            requiredVersion: false
+          }
         },
       })
     );
