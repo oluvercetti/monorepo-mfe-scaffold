@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+@import "@repo/ui/src/styles/globals.css";
+
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -73,4 +75,41 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* Custom styles for react-colorful color picker to match the attached design */
+.react-colorful {
+  padding: 16px;
+  border-radius: 12px;
+  background: #33333a;
+  box-shadow: 0 6px 12px #999;
+  width: 260px;
+}
+
+.react-colorful__saturation {
+  margin: 15px 0;
+  border-radius: 5px;
+  border-bottom: none;
+  height: 180px;
+}
+
+.react-colorful__hue {
+  order: -1;
+  height: 14px;
+  border-radius: 5px;
+  margin-bottom: 8px;
+}
+
+.react-colorful__alpha {
+  height: 14px;
+  border-radius: 5px;
+}
+
+.react-colorful__hue-pointer,
+.react-colorful__alpha-pointer {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  box-shadow: 0 2px 6px #0003;
+  border: 2px solid #fff;
 }

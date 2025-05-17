@@ -1,6 +1,6 @@
-export type User = {
-    id: string;
-    name: string;
-    email: string;
-    role: string;
+export type Ticket = {
+  id: string;
+  title: string;
+  description: string;
+  status: string;
 };

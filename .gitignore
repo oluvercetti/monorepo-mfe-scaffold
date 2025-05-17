@@ -6,3 +6,5 @@ node_modules
 .env.development
 .env.production
 .env.test
+.DS_Store
+**/.DS_Store

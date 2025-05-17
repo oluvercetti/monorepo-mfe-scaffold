@@ -2,16 +2,14 @@ import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 import { Ticket, TicketStatus } from "../types/ticket";
 
-type TicketStatusValue =
-  | (typeof TicketStatus)[keyof typeof TicketStatus]
-  | "all";
+type StatusFilter = (typeof TicketStatus)[keyof typeof TicketStatus] | "all";
 
 interface TicketsState {
   filters: {
-    status: TicketStatusValue;
+    status: StatusFilter;
     search: string;
   };
-  setStatusFilter: (status: TicketStatusValue) => void;
+  setStatusFilter: (status: StatusFilter) => void;
   setSearchFilter: (search: string) => void;
   selectedTicket: Ticket | null;
   setSelectedTicket: (ticket: Ticket | null) => void;
