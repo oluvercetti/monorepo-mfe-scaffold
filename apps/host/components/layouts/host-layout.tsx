@@ -253,7 +253,7 @@ const HostLayout: React.FC<LayoutProps> = ({
             onTabChange={handleTabChange}
             onTabClose={handleTabClose}
           />
-          <main className="flex-grow bg-[#F9FAFB]">{children}</main>
+          <main className="flex-grow flex-1 bg-[#F9FAFB]">{children}</main>
         </div>
       </main>
     </>
