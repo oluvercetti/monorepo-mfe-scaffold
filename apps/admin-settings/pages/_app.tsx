@@ -3,6 +3,7 @@ import type { AppProps } from "next/app";
 import Head from "next/head";
 import { AdminSettingsQueryProvider } from "../lib/providers/query-provider";
 import "@repo/ui/src/styles/globals.css";
+import "../styles/globals.css";
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
