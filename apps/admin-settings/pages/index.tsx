@@ -49,7 +49,7 @@ export default function AdminSettingsPage() {
           description:
             "Customize platform colors, logos, and themes to match your brand.",
           icon: <BrandIcon />,
-          href: "/admin/brand",
+          href: "/admin/brand-styling",
         },
         {
           title: "Entities",
